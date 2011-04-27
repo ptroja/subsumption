@@ -1,0 +1,8 @@
+#Sun Apr 17 10:21:14 CEST 2011
+eclipse.preferences.version=1
+gmf_dashboard/domainGenerationModel=platform\:/resource/subsumption/model/subsumption.genmodel
+gmf_dashboard/domainModel=platform\:/resource/subsumption/model/subsumption.ecore
+gmf_dashboard/generationModel=platform\:/resource/subsumption/model/subsumption.gmfgen
+gmf_dashboard/graphicalDefinitionModel=platform\:/resource/subsumption/model/subsumption.gmfgraph
+gmf_dashboard/mappingModel=platform\:/resource/subsumption/model/subsumption.gmfmap
+gmf_dashboard/toolingDefinitionModel=platform\:/resource/subsumption/model/subsumption.gmftool

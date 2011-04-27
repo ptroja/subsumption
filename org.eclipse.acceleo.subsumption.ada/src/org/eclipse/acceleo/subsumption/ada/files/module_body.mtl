@@ -1,0 +1,301 @@
+[comment encoding = UTF-8 /]
+[module module_body('http://subsumption/1.0')/]
+
+[template public module_body(aModule : Module)]
+
+[file (aModule.name.concat('_module.adb'), false, 'UTF-8'))]
+with Ada.Real_Time; use Ada.Real_Time;
+
+-- Module buffers
+with [self.name/]_buffers; use [self.name/]_buffers;
+-- Module main operation function
+with [self.name/]_operation;
+
+[comment FIXME: the following allows for duplicated 'with' of modules/]
+-- Modules with inputs connected with the output wires
+[for (aModule.outputs.sink.eContainer(Module)->asSet())]
+with [self.name/]_module;
+[/for]
+-- Modules with suppressors connected with the output wires
+[for (aModule.outputs.activates.eContainer(Input).eContainer(Module)->asSet())]
+with [self.name/]_module;
+[/for]
+-- Modules with inhibitors connected with the output wires
+[for (aModule.outputs.activates.eContainer(Output).eContainer(Module)->asSet())]
+with [self.name/]_module;
+[/for]
+
+
+package body [self.name/]_module is
+
+   [if (self.inputs->select(suppressedBy->notEmpty()))->notEmpty()]
+   type input_with_suppressor is ([for (self.inputs->select(suppressedBy->notEmpty())) separator (', ')][self.name/][/for]);
+   type suppression_state_t is array (input_with_suppressor) of Boolean;
+   type suppression_time_t is array (input_with_suppressor) of Time;   
+   [/if]
+
+   [comment ]test if there are inhibited outputs in the module[/comment]   
+   [if self.outputs->notEmpty() and self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+   type output_with_inhibitor is ([for (self.outputs) separator (', ')][self.name/][/for]);
+   type inhibition_state_t is array (output_with_inhibitor) of Boolean;
+   type inhibition_time_t is array (output_with_inhibitor) of Time;
+   [/if]
+
+   [comment]test if the module have inputs or inhibited outputs[/comment]
+   [if self.inputs->notEmpty() or self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]   
+   ----------------------
+   -- Shared_IO_Status --
+   ----------------------
+   
+   -- Protected type for holding status of asynchronous calls to the agent
+   protected Shared_IO_Status is
+      -- Get the current state of the module wires
+      [if self.period > 0]procedure[else]entry[/if] Get_Current_IO
+      (
+         [if inputs->notEmpty()]current_inputs     : out inputs_t[if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())];[/if][/if]
+         [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]current_inhibition : out inhibition_state_t[/if]
+      );
+      -- Procedures for transmitting data to particulars buffers
+      [for (self.inputs)]
+      procedure Transmit_[self.name/] (item : in [self.name/]_Buffer.Buffer_Data_Type);
+      [/for]
+      [for (aInput : Input | inputs)]
+      [for (aInput.suppressedBy)]
+      procedure Suppress_[aInput.name/]_[i/] (item : in [aInput.name/]_Buffer.Buffer_Data_Type);
+      [/for]
+      [/for]
+      [for (aOutput : Output | outputs)]
+	  [for (aOutput.inhibitedBy)]
+      procedure Inhibit_[aOutput.name/]_[i/];
+	  [/for]
+	  [/for] 
+   private
+      -- Internal, protected copy of the data
+      [if self.inputs->notEmpty()]
+      inputs_state     : inputs_t;
+      [comment]hold a state of the suppressed inputs[/comment]
+      [if self.inputs->asSet()->exists(aInput : Input | aInput.suppressedBy->notEmpty())]
+      suppressed       : suppression_state_t := (others => False);
+      suppression_time : suppression_time_t;
+      [/if]
+      [/if]
+      [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+      inhibited        : inhibition_state_t  := (others => False);
+      inhibition_time  : inhibition_time_t;
+      [/if]
+
+      [if not (aModule.period > 0)]
+      -- Track changes of the input wires
+      Changed : Boolean := False;
+      [/if]
+
+      -- Helper routines
+      [if self.inputs->asSet()->exists(aInput : Input | aInput.suppressedBy->notEmpty())]
+      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span);
+      [/if]
+      [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+      procedure record_inhibition (output : in output_with_inhibitor; time   : in Time_Span);
+      [/if]
+
+   end Shared_IO_Status;
+
+   ---------------------------
+   -- Shared_IO_Status body --
+   ---------------------------
+
+   protected body Shared_IO_Status is
+      [if self.period > 0]procedure[else]entry[/if] Get_Current_IO
+      (
+         [if inputs->notEmpty()]current_inputs     : out inputs_t[if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())];[/if][/if]
+         [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]current_inhibition : out inhibition_state_t[/if]
+      )
+      [if not (self.period > 0)]when Changed[/if]
+      is
+         [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+         now : constant Time := Clock;
+         [/if]
+      begin
+         [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+         -- Check if inhibitors have not already expired
+         for output in output_with_inhibitor'Range loop
+            if inhibited (output) and inhibition_time (output) < now then
+               inhibited (output) := False;
+            end if;
+         end loop;
+         -- Copy the current status of the inhibitors
+         current_inhibition := inhibited;
+         [/if]
+         [if self.inputs->notEmpty()]
+         -- Copy the current status of the input lines
+         current_inputs := inputs_state;
+         -- Mark input data buffers as used
+         [for (self.inputs)]
+         [self.name/]_Buffer.MarkAsUsed (inputs_state.[self.name/]);
+         [/for]
+         [/if]
+         [if not (aModule.period > 0)]
+         Changed := False;
+         [/if]
+      end Get_Current_IO;
+
+      [for (aInput : Input | inputs)]
+      procedure Transmit_[self.name/] (item : in [self.name/]_Buffer.Buffer_Data_Type) is
+      begin
+         [if aInput.suppressedBy->notEmpty()]
+         -- Check if suppression has already expired
+         if suppressed ([self.name/]) and suppression_time ([self.name/]) < Clock then
+            suppressed ([self.name/]) := False;
+         end if;
+         -- and eventually store the new data
+         if not suppressed ([self.name/]) then
+            inputs_state.[self.name/].Set (item);
+            [if not (aModule.period > 0)]
+            Changed := True;
+            [/if]
+         end if;
+         [else]
+         inputs_state.[self.name/].Set (item);
+         [if not (aModule.period > 0)]
+         Changed := True;
+         [/if]
+         [/if]
+      end Transmit_[self.name/];
+      [/for]
+      
+      [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+      [for (aOutput : Output | self.outputs)]
+      [for (aInhibitor : Inhibitor | self.inhibitedBy)]
+      procedure Inhibit_[aOutput.name/]_[i/] is
+      begin
+         record_inhibition ([aOutput.name/], Milliseconds ([(1000*aInhibitor.time).floor()/]));
+      end Inhibit_[aOutput.name/]_[i/];      
+      [/for]
+      [/for]
+
+      procedure record_inhibition (output : in output_with_inhibitor; time : in Time_Span) is
+      begin
+         inhibition_time (output) := Clock + time;
+         inhibited (output)       := True;
+      end record_inhibition;      
+      [/if]
+
+      [if self.inputs->asSet()->exists(aInput : Input | aInput.suppressedBy->notEmpty())]
+      [for (aInput : Input | self.inputs)]
+      [for (aSuppressor : Suppressor | self.suppressedBy)]
+      procedure Suppress_[aInput.name/]_[i/] (item : in [aInput.name/]_Buffer.Buffer_Data_Type) is
+      begin
+         [if aInput.suppressedBy->notEmpty()]
+         record_suppression ([aInput.name/], Milliseconds ([(1000*aSuppressor.time).floor()/]));
+         [/if]
+         inputs_state.[aInput.name/].Set (item);
+      end Suppress_[aInput.name/]_[i/];
+      [/for]
+      [/for]
+
+      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span) is
+      begin
+         suppression_time (input) := Clock + time;
+         suppressed (input)       := True;
+         [if not (aModule.period > 0)]
+         Changed                  := True;
+         [/if]
+      end record_suppression;
+      [/if]
+   end Shared_IO_Status;
+   [/if]
+
+   task Main is
+      -- Set this if default stack size is not appropriate
+      -- pragma Storage_Size(4096);
+   end Main;
+
+   [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
+   current_inhibition_state : inhibition_state_t;
+   [/if]
+
+   task body Main is
+      -- System_Time.System_Start_Time;
+      [if period->notEmpty() and period > 0]
+      Next_Time      : Ada.Real_Time.Time := Ada.Real_Time.Clock;
+      [/if]
+      [if self.inputs->notEmpty()]
+      current_inputs : inputs_t;
+      [/if]
+      [if self.outputs->notEmpty()]
+      next_outputs   : outputs_t;
+      [/if]
+   begin
+      -- TODO: call the initialization routine
+      -- (if not done by the Ada.Finalization)
+
+      loop
+         [if period->notEmpty() and period > 0]
+         delay until Next_Time;
+         [/if]
+
+         [comment]test if the module have inputs or inhibited outputs[/comment]
+         [if self.inputs->notEmpty() or self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]   
+         -- Get the current state of the module wires
+         Shared_IO_Status.Get_Current_IO (
+            [if self.inputs->notEmpty()]current_inputs => current_inputs[if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())],[/if][/if]
+            [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]current_inhibition => current_inhibition_state[/if]
+         );
+         [/if]
+
+         -- Evaluate the module main function
+         [if self.outputs->notEmpty()]next_outputs := [/if][name/]_operation.operation (current_inputs);
+         
+         [if self.outputs->notEmpty()]
+         -- Check if data output has been requested and send it out
+         [/if]
+         [for (outputs)]
+         if next_outputs.[name/].isFresh then
+            Send_Y1 (next_outputs.[name/].Get);
+         end if;
+         [/for]
+
+         [if period->notEmpty() and period > 0]
+         -- Set the next wakeup time
+         Next_Time := Next_Time + Ada.Real_Time.Milliseconds ([(1000*period).floor()/]);
+         [/if]
+      end loop;
+   end Main;
+
+   [for (self.inputs) separator ('\n')]
+   procedure Transmit_[name/] (item : in [name/]_Buffer.Buffer_Data_Type) is
+   begin
+      Shared_IO_Status.Transmit_[name/] (item);
+   end Transmit_[name/];
+   [/for]
+
+   [for (aOutput : Output | self.outputs) separator ('\n')]
+   procedure Send_[name/] (item : in [name/]_Buffer.Buffer_Data_Type) is
+   begin
+      [if (aOutput.sink->isEmpty())]
+      null;
+      [else]
+      [if aOutput.inhibitedBy->notEmpty()]
+      if not current_inhibition_state ([name/]) then
+      [/if]
+         [for (aSink : Input | aOutput.sink)]
+         [aSink.eContainer().oclAsType(Module).name/]_module.Transmit_[aSink.name/] (item);
+         [/for]
+      [if aOutput.inhibitedBy->notEmpty()]
+      end if;
+      [/if]
+      [/if]
+   end Send_[name/];
+   [/for]
+
+   [for (aOutput : Output | self.outputs) separator ('\n')]
+   [for (aOutput.inhibitedBy)]
+   procedure Inhibit_[aOutput.name/]_[i/] is
+   begin
+      Shared_IO_Status.Inhibit_[aOutput.name/]_[i/];
+   end Inhibit_[aOutput.name/]_[i/];
+   [/for]
+   [/for]
+end [aModule.name/]_module;
+[/file]
+
+[/template]

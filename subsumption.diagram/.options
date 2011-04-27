@@ -1,0 +1,7 @@
+# Tracing options for the subsumption.diagram plug-in
+
+# Common issues
+subsumption.diagram/debug=false
+
+# Visual IDs
+subsumption.diagram/debug/visualID=false
