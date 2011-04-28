@@ -29,26 +29,26 @@ with [self.name/]_module;
 package body [self.name/]_module is
 
    [if (self.inputs->select(suppressedBy->notEmpty()))->notEmpty()]
-   type input_with_suppressor is ([for (self.inputs->select(suppressedBy->notEmpty())) separator (', ')][self.name/][/for]);
-   type suppression_state_t is array (input_with_suppressor) of Boolean;
-   type suppression_time_t is array (input_with_suppressor) of Time;   
+   type suppressed_input is ([for (self.inputs->select(suppressedBy->notEmpty())) separator (', ')][self.name/][/for]);
+   type suppression_state_t is array (suppressed_input) of Boolean;
+   type suppression_time_t is array (suppressed_input) of Time;   
    [/if]
 
    [comment ]test if there are inhibited outputs in the module[/comment]   
    [if self.outputs->notEmpty() and self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
-   type output_with_inhibitor is ([for (self.outputs) separator (', ')][self.name/][/for]);
-   type inhibition_state_t is array (output_with_inhibitor) of Boolean;
-   type inhibition_time_t is array (output_with_inhibitor) of Time;
+   type inhibited_output is ([for (self.outputs) separator (', ')][self.name/][/for]);
+   type inhibition_state_t is array (inhibited_output) of Boolean;
+   type inhibition_time_t is array (inhibited_output) of Time;
    [/if]
 
    [comment]test if the module have inputs or inhibited outputs[/comment]
    [if self.inputs->notEmpty() or self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]   
    ----------------------
-   -- Shared_IO_Status --
+   -- Protected_IO --
    ----------------------
    
    -- Protected type for holding status of asynchronous calls to the agent
-   protected Shared_IO_Status is
+   protected Protected_IO is
       -- Get the current state of the module wires
       [if self.period > 0]procedure[else]entry[/if] Get_Current_IO
       (
@@ -91,19 +91,19 @@ package body [self.name/]_module is
 
       -- Helper routines
       [if self.inputs->asSet()->exists(aInput : Input | aInput.suppressedBy->notEmpty())]
-      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span);
+      procedure record_suppression (input : in suppressed_input; time : in Time_Span);
       [/if]
       [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
-      procedure record_inhibition (output : in output_with_inhibitor; time   : in Time_Span);
+      procedure record_inhibition (output : in inhibited_output; time   : in Time_Span);
       [/if]
 
-   end Shared_IO_Status;
+   end Protected_IO;
 
    ---------------------------
-   -- Shared_IO_Status body --
+   -- Protected_IO body --
    ---------------------------
 
-   protected body Shared_IO_Status is
+   protected body Protected_IO is
       [if self.period > 0]procedure[else]entry[/if] Get_Current_IO
       (
          [if inputs->notEmpty()]current_inputs     : out inputs_t[if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())];[/if][/if]
@@ -117,7 +117,7 @@ package body [self.name/]_module is
       begin
          [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]
          -- Check if inhibitors have not already expired
-         for output in output_with_inhibitor'Range loop
+         for output in inhibited_output'Range loop
             if inhibited (output) and inhibition_time (output) < now then
                inhibited (output) := False;
             end if;
@@ -172,7 +172,7 @@ package body [self.name/]_module is
       [/for]
       [/for]
 
-      procedure record_inhibition (output : in output_with_inhibitor; time : in Time_Span) is
+      procedure record_inhibition (output : in inhibited_output; time : in Time_Span) is
       begin
          inhibition_time (output) := Clock + time;
          inhibited (output)       := True;
@@ -192,7 +192,7 @@ package body [self.name/]_module is
       [/for]
       [/for]
 
-      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span) is
+      procedure record_suppression (input : in suppressed_input; time : in Time_Span) is
       begin
          suppression_time (input) := Clock + time;
          suppressed (input)       := True;
@@ -201,7 +201,7 @@ package body [self.name/]_module is
          [/if]
       end record_suppression;
       [/if]
-   end Shared_IO_Status;
+   end Protected_IO;
    [/if]
 
    task Main is
@@ -236,7 +236,7 @@ package body [self.name/]_module is
          [comment]test if the module have inputs or inhibited outputs[/comment]
          [if self.inputs->notEmpty() or self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]   
          -- Get the current state of the module wires
-         Shared_IO_Status.Get_Current_IO (
+         Protected_IO.Get_Current_IO (
             [if self.inputs->notEmpty()]current_inputs => current_inputs[if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())],[/if][/if]
             [if self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]current_inhibition => current_inhibition_state[/if]
          );
@@ -261,24 +261,24 @@ package body [self.name/]_module is
       end loop;
    end Main;
 
-   [for (self.inputs) separator ('\n')]
-   procedure Transmit_[name/] (item : in [name/]_Buffer.Buffer_Data_Type) is
-   begin
-      Shared_IO_Status.Transmit_[name/] (item);
-   end Transmit_[name/];
-   [/for]
-
+   -- local access to the output buffers
    [for (aOutput : Output | self.outputs) separator ('\n')]
    procedure Send_[name/] (item : in [name/]_Buffer.Buffer_Data_Type) is
    begin
-      [if (aOutput.sink->isEmpty())]
+      [if (aOutput.sink->isEmpty() and aOutput.activates->isEmpty())]
       null;
       [else]
       [if aOutput.inhibitedBy->notEmpty()]
       if not current_inhibition_state ([name/]) then
       [/if]
          [for (aSink : Input | aOutput.sink)]
-         [aSink.eContainer().oclAsType(Module).name/]_module.Transmit_[aSink.name/] (item);
+         [aSink.eContainer(Module).name/]_module.Transmit_[aSink.name/] (item);
+         [/for]
+         [for (aInhibitor : Inhibitor | aOutput.activates)]         
+         [aInhibitor.inhibits.eContainer(Module).name/]_module.Suppress_[aInhibitor.inhibits.name/]_[aInhibitor.inhibits.inhibitedBy->indexOf(aInhibitor)/] (item);
+         [/for]
+         [for (aSuppressor : Suppressor | aOutput.activates)]
+         [aSuppressor.suppress.eContainer(Module).name/]_module.Suppress_[aSuppressor.suppress.name/]_[aSuppressor.suppress.suppressedBy->indexOf(aSuppressor)/] (item);
          [/for]
       [if aOutput.inhibitedBy->notEmpty()]
       end if;
@@ -287,14 +287,33 @@ package body [self.name/]_module is
    end Send_[name/];
    [/for]
 
+   -- remote access to the input buffers
+   [for (self.inputs) separator ('\n')]
+   procedure Transmit_[name/] (item : in [name/]_Buffer.Buffer_Data_Type) is
+   begin
+      Protected_IO.Transmit_[name/] (item);
+   end Transmit_[name/];
+   [/for]
+
+   -- remote access to the output inhibitors
    [for (aOutput : Output | self.outputs) separator ('\n')]
    [for (aOutput.inhibitedBy)]
    procedure Inhibit_[aOutput.name/]_[i/] is
    begin
-      Shared_IO_Status.Inhibit_[aOutput.name/]_[i/];
+      Protected_IO.Inhibit_[aOutput.name/]_[i/];
    end Inhibit_[aOutput.name/]_[i/];
    [/for]
    [/for]
+   
+   -- remote access to the input suppressors
+   [for (aInput : Input | self.inputs) separator ('\n')]
+   [for (aInput.suppressedBy)]
+   procedure Suppress_[aInput.name/]_[i/] (item : in [aInput.name/]_Buffer.Buffer_Data_Type) is
+   begin
+      Protected_IO.Suppress_[aInput.name/]_[i/] (item);
+   end Suppress_[aInput.name/]_[i/];
+   [/for]
+   [/for]   
 end [aModule.name/]_module;
 [/file]
 

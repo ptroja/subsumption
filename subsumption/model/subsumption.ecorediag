@@ -284,7 +284,7 @@
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_CkE_EWhSEeCW4sB27pysvA" routing="Rectilinear" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_CkE_EmhSEeCW4sB27pysvA" fontName="Sans"/>
     <element xsi:nil="true"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_CkE_E2hSEeCW4sB27pysvA" points="[4, -3, -68, -133]$[64, -3, -8, -133]$[64, 109, -8, -21]"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_CkE_E2hSEeCW4sB27pysvA" points="[4, 11, -68, -119]$[64, 11, -8, -119]$[64, 109, -8, -21]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_CkHbUGhSEeCW4sB27pysvA" id="(0.967741935483871,0.33962264150943394)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_EaZAcGhSEeCW4sB27pysvA" type="3003" source="_HfKOcGhREeCW4sB27pysvA" target="_-1so0GhREeCW4sB27pysvA">

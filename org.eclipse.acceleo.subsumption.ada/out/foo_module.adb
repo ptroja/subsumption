@@ -15,16 +15,16 @@ with bar_module;
 package body foo_module is
 
 
-   type output_with_inhibitor is (Y1, Y2);
-   type inhibition_state_t is array (output_with_inhibitor) of Boolean;
-   type inhibition_time_t is array (output_with_inhibitor) of Time;
+   type inhibited_output is (Y1, Y2);
+   type inhibition_state_t is array (inhibited_output) of Boolean;
+   type inhibition_time_t is array (inhibited_output) of Time;
 
    ----------------------
-   -- Shared_IO_Status --
+   -- Protected_IO --
    ----------------------
    
    -- Protected type for holding status of asynchronous calls to the agent
-   protected Shared_IO_Status is
+   protected Protected_IO is
       -- Get the current state of the module wires
       procedure Get_Current_IO
       (
@@ -44,15 +44,15 @@ package body foo_module is
 
 
       -- Helper routines
-      procedure record_inhibition (output : in output_with_inhibitor; time   : in Time_Span);
+      procedure record_inhibition (output : in inhibited_output; time   : in Time_Span);
 
-   end Shared_IO_Status;
+   end Protected_IO;
 
    ---------------------------
-   -- Shared_IO_Status body --
+   -- Protected_IO body --
    ---------------------------
 
-   protected body Shared_IO_Status is
+   protected body Protected_IO is
       procedure Get_Current_IO
       (
          current_inputs     : out inputs_t;
@@ -63,7 +63,7 @@ package body foo_module is
          now : constant Time := Clock;
       begin
          -- Check if inhibitors have not already expired
-         for output in output_with_inhibitor'Range loop
+         for output in inhibited_output'Range loop
             if inhibited (output) and inhibition_time (output) < now then
                inhibited (output) := False;
             end if;
@@ -95,13 +95,13 @@ package body foo_module is
          record_inhibition (Y2, Milliseconds (9000));
       end Inhibit_Y2_1;      
 
-      procedure record_inhibition (output : in output_with_inhibitor; time : in Time_Span) is
+      procedure record_inhibition (output : in inhibited_output; time : in Time_Span) is
       begin
          inhibition_time (output) := Clock + time;
          inhibited (output)       := True;
       end record_inhibition;      
 
-   end Shared_IO_Status;
+   end Protected_IO;
 
    task Main is
       -- Set this if default stack size is not appropriate
@@ -123,7 +123,7 @@ package body foo_module is
          delay until Next_Time;
 
          -- Get the current state of the module wires
-         Shared_IO_Status.Get_Current_IO (
+         Protected_IO.Get_Current_IO (
             current_inputs => current_inputs,
             current_inhibition => current_inhibition_state
          );
@@ -144,16 +144,7 @@ package body foo_module is
       end loop;
    end Main;
 
-   procedure Transmit_X1 (item : in X1_Buffer.Buffer_Data_Type) is
-   begin
-      Shared_IO_Status.Transmit_X1 (item);
-   end Transmit_X1;
-
-   procedure Transmit_X2 (item : in X2_Buffer.Buffer_Data_Type) is
-   begin
-      Shared_IO_Status.Transmit_X2 (item);
-   end Transmit_X2;
-
+   -- local access to the output buffers
    procedure Send_Y1 (item : in Y1_Buffer.Buffer_Data_Type) is
    begin
       if not current_inhibition_state (Y1) then
@@ -164,16 +155,33 @@ package body foo_module is
 
    procedure Send_Y2 (item : in Y2_Buffer.Buffer_Data_Type) is
    begin
-      null;
+      if not current_inhibition_state (Y2) then
+         bar_module.Suppress_X2_1 (item);
+      end if;
    end Send_Y2;
 
+   -- remote access to the input buffers
+   procedure Transmit_X1 (item : in X1_Buffer.Buffer_Data_Type) is
+   begin
+      Protected_IO.Transmit_X1 (item);
+   end Transmit_X1;
+
+   procedure Transmit_X2 (item : in X2_Buffer.Buffer_Data_Type) is
+   begin
+      Protected_IO.Transmit_X2 (item);
+   end Transmit_X2;
+
+   -- remote access to the output inhibitors
    procedure Inhibit_Y1_1 is
    begin
-      Shared_IO_Status.Inhibit_Y1_1;
+      Protected_IO.Inhibit_Y1_1;
    end Inhibit_Y1_1;
 
    procedure Inhibit_Y2_1 is
    begin
-      Shared_IO_Status.Inhibit_Y2_1;
+      Protected_IO.Inhibit_Y2_1;
    end Inhibit_Y2_1;
+   
+   -- remote access to the input suppressors
+
 end foo_module;

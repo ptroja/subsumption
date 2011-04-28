@@ -12,17 +12,17 @@ with bar_operation;
 
 package body bar_module is
 
-   type input_with_suppressor is (X2);
-   type suppression_state_t is array (input_with_suppressor) of Boolean;
-   type suppression_time_t is array (input_with_suppressor) of Time;   
+   type suppressed_input is (X2);
+   type suppression_state_t is array (suppressed_input) of Boolean;
+   type suppression_time_t is array (suppressed_input) of Time;   
 
 
    ----------------------
-   -- Shared_IO_Status --
+   -- Protected_IO --
    ----------------------
    
    -- Protected type for holding status of asynchronous calls to the agent
-   protected Shared_IO_Status is
+   protected Protected_IO is
       -- Get the current state of the module wires
       entry Get_Current_IO
       (
@@ -43,15 +43,15 @@ package body bar_module is
       Changed : Boolean := False;
 
       -- Helper routines
-      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span);
+      procedure record_suppression (input : in suppressed_input; time : in Time_Span);
 
-   end Shared_IO_Status;
+   end Protected_IO;
 
    ---------------------------
-   -- Shared_IO_Status body --
+   -- Protected_IO body --
    ---------------------------
 
-   protected body Shared_IO_Status is
+   protected body Protected_IO is
       entry Get_Current_IO
       (
          current_inputs     : out inputs_t
@@ -93,13 +93,13 @@ package body bar_module is
          inputs_state.X2.Set (item);
       end Suppress_X2_1;
 
-      procedure record_suppression (input : in input_with_suppressor; time : in Time_Span) is
+      procedure record_suppression (input : in suppressed_input; time : in Time_Span) is
       begin
          suppression_time (input) := Clock + time;
          suppressed (input)       := True;
          Changed                  := True;
       end record_suppression;
-   end Shared_IO_Status;
+   end Protected_IO;
 
    task Main is
       -- Set this if default stack size is not appropriate
@@ -117,7 +117,7 @@ package body bar_module is
       loop
 
          -- Get the current state of the module wires
-         Shared_IO_Status.Get_Current_IO (
+         Protected_IO.Get_Current_IO (
             current_inputs => current_inputs
             
          );
@@ -129,15 +129,25 @@ package body bar_module is
       end loop;
    end Main;
 
+   -- local access to the output buffers
+
+   -- remote access to the input buffers
    procedure Transmit_X1 (item : in X1_Buffer.Buffer_Data_Type) is
    begin
-      Shared_IO_Status.Transmit_X1 (item);
+      Protected_IO.Transmit_X1 (item);
    end Transmit_X1;
 
    procedure Transmit_X2 (item : in X2_Buffer.Buffer_Data_Type) is
    begin
-      Shared_IO_Status.Transmit_X2 (item);
+      Protected_IO.Transmit_X2 (item);
    end Transmit_X2;
 
+   -- remote access to the output inhibitors
+   
+   -- remote access to the input suppressors
 
+   procedure Suppress_X2_1 (item : in X2_Buffer.Buffer_Data_Type) is
+   begin
+      Protected_IO.Suppress_X2_1 (item);
+   end Suppress_X2_1;
 end bar_module;

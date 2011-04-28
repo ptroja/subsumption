@@ -8,6 +8,10 @@ package bar_module is
    procedure Transmit_X1(item : in X1_Buffer.Buffer_Data_Type);
    procedure Transmit_X2(item : in X2_Buffer.Buffer_Data_Type);
 
-   -- remote access to the input inhibitors
+   -- remote access to the output inhibitors
+   
+   -- remote access to the input suppressors
+   procedure Suppress_X2_1 (item : in X2_Buffer.Buffer_Data_Type);
 private
+   -- local access to the output buffers
 end bar_module;

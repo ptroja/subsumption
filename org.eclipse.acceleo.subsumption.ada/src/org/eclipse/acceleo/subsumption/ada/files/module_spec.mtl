@@ -15,13 +15,21 @@ package [aModule.name/]_module is
    procedure Transmit_[self.name/](item : in [self.name/]_Buffer.Buffer_Data_Type);
    [/for]
 
-   -- remote access to the input inhibitors
+   -- remote access to the output inhibitors
    [for (aOutput : Output | aModule.outputs)]
    [for (aOutput.inhibitedBy)]
    procedure Inhibit_[aOutput.name/]_[i/];
    [/for]
-   [/for] 
+   [/for]
+   
+   -- remote access to the input suppressors
+   [for (aInput : Input | aModule.inputs)]
+   [for (aInput.suppressedBy)]
+   procedure Suppress_[aInput.name/]_[i/] (item : in [aInput.name/]_Buffer.Buffer_Data_Type);
+   [/for]
+   [/for]    
 private
+   -- local access to the output buffers
    [for (aModule.outputs)]
    procedure Send_[self.name/](item : [self.name/]_Buffer.Buffer_Data_Type);
    [/for]
