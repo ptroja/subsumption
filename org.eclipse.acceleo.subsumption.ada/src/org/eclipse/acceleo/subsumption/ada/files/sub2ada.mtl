@@ -1,12 +1,13 @@
 [comment encoding = UTF-8 /]
 [module sub2ada('http://subsumption/1.0')/]
-[import org::eclipse::acceleo::subsumption::ada::files::system_body/]
-[import org::eclipse::acceleo::subsumption::ada::files::data_buffer/]
-[import org::eclipse::acceleo::subsumption::ada::files::module_spec/]
-[import org::eclipse::acceleo::subsumption::ada::files::module_body/]
-[import org::eclipse::acceleo::subsumption::ada::files::operation_spec/]
-[import org::eclipse::acceleo::subsumption::ada::files::operation_body/]
-[import org::eclipse::acceleo::subsumption::ada::files::buffers_spec/]
+[import system_body/]
+[import data_buffer/]
+[import module_spec/]
+[import module_body/]
+[import operation_spec/]
+[import operation_body/]
+[import buffers_spec/]
+[import project/]
 
 [template public sub2ada(aSystem : System)]
 	
@@ -22,5 +23,7 @@
 [operation_body(aModule)/]
 [buffers_spec(aModule)/]
 [/for]
+
+[project(aSystem)/]
 	
 [/template]
