@@ -1,3 +1,4 @@
 .metadata/
+org.eclipse.acceleo.subsumption.ada/bin/
 org.eclipse.acceleo.subsumption.ada/out/
 *.class
