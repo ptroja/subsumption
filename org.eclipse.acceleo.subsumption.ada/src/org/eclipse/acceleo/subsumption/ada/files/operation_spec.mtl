@@ -3,7 +3,7 @@
 
 [template public operation_spec(aModule : Module)]
 	
-[file (aModule.name.concat('_operation.ads'), false, 'UTF-8')]
+[file (aModule.name+'_operation.ads', false, 'UTF-8')]
 with [name/]_buffers; use [name/]_buffers;
 
 package [name/]_operation is

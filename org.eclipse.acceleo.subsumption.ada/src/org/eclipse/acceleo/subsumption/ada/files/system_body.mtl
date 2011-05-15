@@ -3,7 +3,7 @@
 
 [template public system_body(aSystem : System)]
 	
-[file (aSystem.name.concat('.adb'), false, 'UTF-8'))]
+[file (aSystem.name+'.adb', false, 'UTF-8'))]
 -- with Ada.Text_IO;
 with Ada.Real_Time;
 

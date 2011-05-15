@@ -3,7 +3,7 @@
 
 [template public buffers_spec(aModule : Module)]
 	
-[file (aModule.name.concat('_buffers.ads'), false, 'UTF-8')]
+[file (aModule.name+'_buffers.ads', false, 'UTF-8')]
 with Data_Buffer;
 
 package [name/]_buffers is

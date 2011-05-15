@@ -3,7 +3,7 @@
 
 [template public module_body(aModule : Module)]
 
-[file (aModule.name.concat('_module.adb'), false, 'UTF-8'))]
+[file (aModule.name+'_module.adb', false, 'UTF-8'))]
 with Ada.Real_Time; use Ada.Real_Time;
 
 -- Module buffers

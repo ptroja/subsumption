@@ -3,7 +3,7 @@
 
 [template public module_spec(aModule : Module)]
 	
-[file (aModule.name.concat('_module.ads'), false, 'UTF-8'))]
+[file (aModule.name+'_module.ads', false, 'UTF-8'))]
 with [aModule.name/]_buffers; use [aModule.name/]_buffers;
 
 package [aModule.name/]_module is

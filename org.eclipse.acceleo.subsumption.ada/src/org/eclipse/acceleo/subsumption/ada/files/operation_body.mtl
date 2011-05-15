@@ -3,7 +3,7 @@
 
 [template public operation_body(aModule : Module)]
 	
-[file (aModule.name.concat('_operation.adb'), false, 'UTF-8')]
+[file (aModule.name+'_operation.adb', false, 'UTF-8')]
 -- with Ada.Text_IO;
 
 package body [name/]_operation is
