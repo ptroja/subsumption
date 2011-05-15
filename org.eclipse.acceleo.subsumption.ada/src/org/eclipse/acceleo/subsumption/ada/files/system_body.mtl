@@ -7,8 +7,14 @@
 -- with Ada.Text_IO;
 with Ada.Real_Time;
 
+--  Create the module IO subsystems
 [for (aSystem.modules)]
 with [self.name/]_module;
+[/for]
+
+--  Initialize the modules tasks
+[for (aSystem.modules)]
+with [self.name/]_module_task;
 [/for]
 
 procedure [aSystem.name/] is
