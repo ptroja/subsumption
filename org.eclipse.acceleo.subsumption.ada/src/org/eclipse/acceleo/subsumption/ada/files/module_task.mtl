@@ -12,7 +12,7 @@ package [self.name/]_module_task is
 private
    -- local access to the output buffers
    [for (aModule.outputs)]
-   procedure Send_[self.name/](item : [self.name/]_Buffer.Buffer_Data_Type);
+   procedure Send_[self.name/] (item : [self.name/]_Buffer.Buffer_Data_Type);
    [/for]
 end [self.name/]_module_task;
 [/file]
@@ -74,7 +74,7 @@ package body [self.name/]_module_task is
          [/if]
 
          [comment]test if the module have inputs or inhibited outputs[/comment]
-         [if self.inputs->notEmpty() or self.outputs->asSet()->exists(aOutput : Output | aOutput.inhibitedBy->notEmpty())]   
+         [if inputs->notEmpty() or outputs.inhibitedBy->notEmpty()]   
          -- Get the current state of the module wires
          Protected_IO.Get_Current_IO (
             [if inputs->notEmpty()]current_inputs => current_inputs[if outputs.inhibitedBy->notEmpty()],[/if][/if]
@@ -83,9 +83,9 @@ package body [self.name/]_module_task is
          [/if]
 
          -- Evaluate the module main function
-         [if self.outputs->notEmpty()]next_outputs := [/if][name/]_operation.operation (current_inputs);
+         [if outputs->notEmpty()]next_outputs := [/if][name/]_operation.operation (current_inputs);
          
-         [if self.outputs->notEmpty()]
+         [if outputs->notEmpty()]
          -- Check if data output has been requested and send it out
          [/if]
          [for (outputs)]
