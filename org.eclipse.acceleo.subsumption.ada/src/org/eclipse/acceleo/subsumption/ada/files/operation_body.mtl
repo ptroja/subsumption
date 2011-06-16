@@ -12,7 +12,7 @@ package body [name/]_operation is
    -- j : Integer;
 
    -- This function is a main activity of a module   
-   [if outputs->notEmpty()]function[else]procedure[/if] operation (inputs : in inputs_t)[if outputs->notEmpty()] return outputs_t[/if]
+   [if outputs->notEmpty()]function[else]procedure[/if] operation[if inputs->notEmpty()] (inputs : in inputs_t)[/if][if outputs->notEmpty()] return outputs_t[/if]
    is
       [if outputs->notEmpty()]   
       result : outputs_t;

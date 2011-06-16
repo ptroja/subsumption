@@ -23,13 +23,14 @@ procedure [aSystem.name/] is
    Next_Time : Time := Ada.Real_Time.Clock;
 begin
    loop
+      --  dummy main procedure
       Next_Time := Next_Time + Ada.Real_Time.Seconds(1);
       delay until Next_Time;
 
       X := X + 1;
 
-      -- Ada.Text_IO.Put_Line("sender...");
-      foo_module.Transmit_X1(X);
+      --  Ada.Text_IO.Put_Line("sender...");
+      --  foo_module.Transmit_X1(X);
    end loop;
 end Sample;
 [/file]

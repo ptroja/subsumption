@@ -8,7 +8,7 @@ with [name/]_buffers; use [name/]_buffers;
 
 package [name/]_operation is
    -- This operation is executed periodically
-   [if outputs->notEmpty()]function[else]procedure[/if] operation (inputs : in inputs_t)[if outputs->notEmpty()] return outputs_t[/if];
+   [if outputs->notEmpty()]function[else]procedure[/if] operation[if inputs->notEmpty()] (inputs : in inputs_t)[/if][if outputs->notEmpty()] return outputs_t[/if];
 end [name/]_operation;
 [/file]
 	

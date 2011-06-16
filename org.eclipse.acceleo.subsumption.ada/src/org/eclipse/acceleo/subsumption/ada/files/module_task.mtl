@@ -40,7 +40,9 @@ with [self.name/]_module;
 with [self.name/]_module;
 [/for]
 
+[if aModule.inputs->notEmpty() or aModule.outputs.inhibitedBy->notEmpty()]
 with [aModule.name/]_module_io; use [aModule.name/]_module_io;
+[/if]
 
 package body [self.name/]_module_task is
 
@@ -83,14 +85,14 @@ package body [self.name/]_module_task is
          [/if]
 
          -- Evaluate the module main function
-         [if outputs->notEmpty()]next_outputs := [/if][name/]_operation.operation (current_inputs);
+         [if outputs->notEmpty()]next_outputs := [/if][name/]_operation.operation[if self.inputs->notEmpty()] (current_inputs)[/if];
          
          [if outputs->notEmpty()]
          -- Check if data output has been requested and send it out
          [/if]
          [for (outputs)]
          if next_outputs.[name/].isFresh then
-            Send_Y1 (next_outputs.[name/].Get);
+            Send_[name/] (next_outputs.[name/].Get);
          end if;
          [/for]
 

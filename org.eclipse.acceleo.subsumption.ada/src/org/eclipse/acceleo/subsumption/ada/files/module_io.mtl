@@ -2,7 +2,9 @@
 [module module_io('http://subsumption/1.0')/]
 
 [template public module_io(aModule : Module)]
-	
+
+[if self.inputs->notEmpty() or self.outputs.inhibitedBy->notEmpty()]
+
 [comment @main /]
 [file (aModule.name+'_module_io.ads', false, 'UTF-8'))]
 with Ada.Real_Time; use Ada.Real_Time;
@@ -203,5 +205,6 @@ package body [self.name/]_module_io is
 
 end [aModule.name/]_module_io;
 [/file]
+[/if]
 	
 [/template]

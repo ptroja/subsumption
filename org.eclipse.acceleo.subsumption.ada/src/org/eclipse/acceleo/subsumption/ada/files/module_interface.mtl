@@ -31,6 +31,7 @@ package [aModule.name/]_module is
 end [aModule.name/]_module;
 [/file]
 
+[if self.inputs->notEmpty() or self.outputs.inhibitedBy->notEmpty()]
 [file (aModule.name+'_module.adb', false, 'UTF-8'))]
 -- Module data types
 with [self.name/]_buffers; use [self.name/]_buffers;
@@ -69,5 +70,6 @@ package body [self.name/]_module is
    [/for]   
 end [aModule.name/]_module;
 [/file]
+[/if]
 
 [/template]
