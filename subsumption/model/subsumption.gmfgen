@@ -27,6 +27,7 @@
         visualID="3001"
         editPartClassName="InputEditPart"
         itemSemanticEditPolicyClassName="InputItemSemanticEditPolicy"
+        notationViewFactoryClassName="InputViewFactory"
         canonicalEditPolicyClassName="InputCanonicalEditPolicy"
         compartments="//@diagram/@compartments.0"
         graphicalNodeEditPolicyClassName="InputGraphicalNodeEditPolicy"
@@ -41,7 +42,11 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="InputFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class InputFigure extends subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public InputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(7)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class InputFigure extends subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public InputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(7)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;">
+        <attributes
+            xsi:type="gmfgen:DefaultSizeAttributes"
+            height="10"/>
+      </viewmap>
       <modelFacet>
         <metaClass
             href="subsumption.genmodel#//subsumption/Input"/>
@@ -55,6 +60,7 @@
         visualID="3003"
         editPartClassName="SuppressorEditPart"
         itemSemanticEditPolicyClassName="SuppressorItemSemanticEditPolicy"
+        notationViewFactoryClassName="SuppressorViewFactory"
         canonicalEditPolicyClassName="SuppressorCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="SuppressorGraphicalNodeEditPolicy"
         createCommandClassName="SuppressorCreateCommand"
@@ -84,7 +90,8 @@
       <labels
           visualID="5003"
           editPartClassName="SuppressorTimeEditPart"
-          itemSemanticEditPolicyClassName="SuppressorTimeItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="SuppressorTimeItemSemanticEditPolicy"
+          notationViewFactoryClassName="SuppressorTimeViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -104,6 +111,7 @@
         visualID="3002"
         editPartClassName="OutputEditPart"
         itemSemanticEditPolicyClassName="OutputItemSemanticEditPolicy"
+        notationViewFactoryClassName="OutputViewFactory"
         canonicalEditPolicyClassName="OutputCanonicalEditPolicy"
         compartments="//@diagram/@compartments.1"
         graphicalNodeEditPolicyClassName="OutputGraphicalNodeEditPolicy"
@@ -116,8 +124,14 @@
           xsi:type="gmfgen:MetamodelType"
           editHelperClassName="OutputEditHelper"/>
       <viewmap
-          xsi:type="gmfgen:FigureViewmap"
-          figureQualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalLineRectangle"/>
+          xsi:type="gmfgen:InnerClassViewmap"
+          className="OutputFigure"
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;">
+        <attributes
+            xsi:type="gmfgen:DefaultSizeAttributes"
+            width="20"
+            height="10"/>
+      </viewmap>
       <modelFacet>
         <metaClass
             href="subsumption.genmodel#//subsumption/Output"/>
@@ -130,7 +144,8 @@
           xsi:type="gmfgen:GenExternalNodeLabel"
           visualID="5005"
           editPartClassName="OutputNameEditPart"
-          itemSemanticEditPolicyClassName="OutputNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="OutputNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="OutputNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -149,6 +164,7 @@
         visualID="3004"
         editPartClassName="InhibitorEditPart"
         itemSemanticEditPolicyClassName="InhibitorItemSemanticEditPolicy"
+        notationViewFactoryClassName="InhibitorViewFactory"
         canonicalEditPolicyClassName="InhibitorCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="InhibitorGraphicalNodeEditPolicy"
         createCommandClassName="InhibitorCreateCommand"
@@ -178,7 +194,8 @@
       <labels
           visualID="5004"
           editPartClassName="InhibitorTimeEditPart"
-          itemSemanticEditPolicyClassName="InhibitorTimeItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="InhibitorTimeItemSemanticEditPolicy"
+          notationViewFactoryClassName="InhibitorTimeViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -197,6 +214,7 @@
         visualID="2001"
         editPartClassName="ModuleEditPart"
         itemSemanticEditPolicyClassName="ModuleItemSemanticEditPolicy"
+        notationViewFactoryClassName="ModuleViewFactory"
         canonicalEditPolicyClassName="ModuleCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.2"
         graphicalNodeEditPolicyClassName="ModuleGraphicalNodeEditPolicy"
@@ -221,7 +239,8 @@
       <labels
           visualID="5001"
           editPartClassName="ModuleNameEditPart"
-          itemSemanticEditPolicyClassName="ModuleNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="ModuleNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="ModuleNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -240,6 +259,7 @@
         visualID="4001"
         editPartClassName="OutputSinkEditPart"
         itemSemanticEditPolicyClassName="OutputSinkItemSemanticEditPolicy"
+        notationViewFactoryClassName="OutputSinkViewFactory"
         createCommandClassName="OutputSinkCreateCommand"
         reorientCommandClassName="OutputSinkReorientCommand">
       <diagramRunTimeClass
@@ -259,6 +279,7 @@
         visualID="4002"
         editPartClassName="OutputActivatesEditPart"
         itemSemanticEditPolicyClassName="OutputActivatesItemSemanticEditPolicy"
+        notationViewFactoryClassName="OutputActivatesViewFactory"
         createCommandClassName="OutputActivatesCreateCommand"
         reorientCommandClassName="OutputActivatesReorientCommand">
       <diagramRunTimeClass
@@ -279,6 +300,7 @@
         visualID="7002"
         editPartClassName="InputInputCompartmentEditPart"
         itemSemanticEditPolicyClassName="InputInputCompartmentItemSemanticEditPolicy"
+        notationViewFactoryClassName="InputInputCompartmentViewFactory"
         canonicalEditPolicyClassName="InputInputCompartmentCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.1"
         title="InputCompartment"
@@ -290,12 +312,13 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="InputFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class InputFigure extends subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public InputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(7)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class InputFigure extends subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public InputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(0)&#xA;, getMapMode().DPtoLP(7)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
     </compartments>
     <compartments
         visualID="7001"
         editPartClassName="OutputOutputCompartmentEditPart"
         itemSemanticEditPolicyClassName="OutputOutputCompartmentItemSemanticEditPolicy"
+        notationViewFactoryClassName="OutputOutputCompartmentViewFactory"
         canonicalEditPolicyClassName="OutputOutputCompartmentCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.3"
         title="OutputCompartment"
@@ -305,8 +328,9 @@
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <viewmap
-          xsi:type="gmfgen:FigureViewmap"
-          figureQualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalLineRectangle"/>
+          xsi:type="gmfgen:InnerClassViewmap"
+          className="OutputFigure"
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
     </compartments>
     <palette>
       <groups

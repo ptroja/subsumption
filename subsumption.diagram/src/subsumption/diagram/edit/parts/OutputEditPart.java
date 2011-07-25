@@ -158,14 +158,14 @@ public class OutputEditPart extends BorderedBorderItemEditPart {
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new VerticalLineRectangle();
+		return primaryShape = new OutputFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public VerticalLineRectangle getPrimaryShape() {
-		return (VerticalLineRectangle) primaryShape;
+	public OutputFigure getPrimaryShape() {
+		return (OutputFigure) primaryShape;
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class OutputEditPart extends BorderedBorderItemEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(20, 10);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());
@@ -350,6 +350,22 @@ public class OutputEditPart extends BorderedBorderItemEditPart {
 			}
 		}
 		return super.getTargetEditPart(request);
+	}
+
+	/**
+	 * @generated
+	 */
+	public class OutputFigure extends VerticalLineRectangle {
+
+		/**
+		 * @generated
+		 */
+		public OutputFigure() {
+
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(40),
+					getMapMode().DPtoLP(10)));
+		}
+
 	}
 
 }
