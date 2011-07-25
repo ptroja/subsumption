@@ -28,7 +28,11 @@
       <actualFigure
           xsi:type="gmfgraph:CustomFigure"
           name="OutputFigure"
-          qualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalLineRectangle"/>
+          qualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalLineRectangle">
+        <preferredSize
+            dx="40"
+            dy="10"/>
+      </actualFigure>
     </descriptors>
     <descriptors
         name="WireFigure">
@@ -49,6 +53,9 @@
           xsi:type="gmfgraph:CustomFigure"
           name="InputFigure"
           qualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle">
+        <preferredSize
+            dx="40"
+            dy="10"/>
         <insets
             right="7"/>
       </actualFigure>
