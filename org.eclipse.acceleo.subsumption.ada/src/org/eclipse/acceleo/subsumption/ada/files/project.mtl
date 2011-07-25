@@ -10,6 +10,10 @@ pragma Profile (Ravenscar);
 	
 [comment @main /]
 [file (aSystem.name+'.gpr', false, 'UTF-8')]
+-- [protected('project dependiencies')]
+--  with ...;
+-- [/protected]
+
 project [aSystem.name/] is
 
    --  Set the Ada 2005 mode
