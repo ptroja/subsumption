@@ -253,31 +253,81 @@ public class SubsumptionNavigatorContentProvider implements
 			return result.toArray();
 		}
 
-		case OutputSinkEditPart.VISUAL_ID: {
+		case InputEditPart.VISUAL_ID: {
 			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
-			Edge sv = (Edge) view;
-			SubsumptionNavigatorGroup target = new SubsumptionNavigatorGroup(
-					Messages.NavigatorGroupName_OutputSink_4001_target,
-					"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-			SubsumptionNavigatorGroup source = new SubsumptionNavigatorGroup(
-					Messages.NavigatorGroupName_OutputSink_4001_source,
-					"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Node sv = (Node) view;
+			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
+					Messages.NavigatorGroupName_Input_3001_incominglinks,
+					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 			Collection<View> connectedViews;
-			connectedViews = getLinksTargetByType(Collections.singleton(sv),
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					SubsumptionVisualIDRegistry
+							.getType(InputInputCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					SubsumptionVisualIDRegistry
+							.getType(SuppressorEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement,
+					false));
+			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+					SubsumptionVisualIDRegistry
+							.getType(OutputSinkEditPart.VISUAL_ID));
+			incominglinks.addChildren(createNavigatorItems(connectedViews,
+					incominglinks, true));
+			if (!incominglinks.isEmpty()) {
+				result.add(incominglinks);
+			}
+			return result.toArray();
+		}
+
+		case SuppressorEditPart.VISUAL_ID: {
+			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
+					Messages.NavigatorGroupName_Suppressor_3003_incominglinks,
+					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Collection<View> connectedViews;
+			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+					SubsumptionVisualIDRegistry
+							.getType(OutputActivatesEditPart.VISUAL_ID));
+			incominglinks.addChildren(createNavigatorItems(connectedViews,
+					incominglinks, true));
+			if (!incominglinks.isEmpty()) {
+				result.add(incominglinks);
+			}
+			return result.toArray();
+		}
+
+		case ModuleEditPart.VISUAL_ID: {
+			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
 					SubsumptionVisualIDRegistry
 							.getType(InputEditPart.VISUAL_ID));
-			target.addChildren(createNavigatorItems(connectedViews, target,
-					true));
-			connectedViews = getLinksSourceByType(Collections.singleton(sv),
+			result.addAll(createNavigatorItems(connectedViews, parentElement,
+					false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
 					SubsumptionVisualIDRegistry
 							.getType(OutputEditPart.VISUAL_ID));
-			source.addChildren(createNavigatorItems(connectedViews, source,
-					true));
-			if (!target.isEmpty()) {
-				result.add(target);
-			}
-			if (!source.isEmpty()) {
-				result.add(source);
+			result.addAll(createNavigatorItems(connectedViews, parentElement,
+					false));
+			return result.toArray();
+		}
+
+		case InhibitorEditPart.VISUAL_ID: {
+			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
+					Messages.NavigatorGroupName_Inhibitor_3004_incominglinks,
+					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Collection<View> connectedViews;
+			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+					SubsumptionVisualIDRegistry
+							.getType(OutputActivatesEditPart.VISUAL_ID));
+			incominglinks.addChildren(createNavigatorItems(connectedViews,
+					incominglinks, true));
+			if (!incominglinks.isEmpty()) {
+				result.add(incominglinks);
 			}
 			return result.toArray();
 		}
@@ -313,64 +363,31 @@ public class SubsumptionNavigatorContentProvider implements
 			return result.toArray();
 		}
 
-		case InputEditPart.VISUAL_ID: {
+		case OutputSinkEditPart.VISUAL_ID: {
 			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
-					Messages.NavigatorGroupName_Input_3001_incominglinks,
-					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Edge sv = (Edge) view;
+			SubsumptionNavigatorGroup target = new SubsumptionNavigatorGroup(
+					Messages.NavigatorGroupName_OutputSink_4001_target,
+					"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			SubsumptionNavigatorGroup source = new SubsumptionNavigatorGroup(
+					Messages.NavigatorGroupName_OutputSink_4001_source,
+					"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
+			connectedViews = getLinksTargetByType(Collections.singleton(sv),
 					SubsumptionVisualIDRegistry
-							.getType(InputInputCompartmentEditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
+							.getType(InputEditPart.VISUAL_ID));
+			target.addChildren(createNavigatorItems(connectedViews, target,
+					true));
+			connectedViews = getLinksSourceByType(Collections.singleton(sv),
 					SubsumptionVisualIDRegistry
-							.getType(SuppressorEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement,
-					false));
-			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-					SubsumptionVisualIDRegistry
-							.getType(OutputSinkEditPart.VISUAL_ID));
-			incominglinks.addChildren(createNavigatorItems(connectedViews,
-					incominglinks, true));
-			if (!incominglinks.isEmpty()) {
-				result.add(incominglinks);
+							.getType(OutputEditPart.VISUAL_ID));
+			source.addChildren(createNavigatorItems(connectedViews, source,
+					true));
+			if (!target.isEmpty()) {
+				result.add(target);
 			}
-			return result.toArray();
-		}
-
-		case InhibitorEditPart.VISUAL_ID: {
-			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
-					Messages.NavigatorGroupName_Inhibitor_3004_incominglinks,
-					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-			Collection<View> connectedViews;
-			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-					SubsumptionVisualIDRegistry
-							.getType(OutputActivatesEditPart.VISUAL_ID));
-			incominglinks.addChildren(createNavigatorItems(connectedViews,
-					incominglinks, true));
-			if (!incominglinks.isEmpty()) {
-				result.add(incominglinks);
-			}
-			return result.toArray();
-		}
-
-		case SuppressorEditPart.VISUAL_ID: {
-			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			SubsumptionNavigatorGroup incominglinks = new SubsumptionNavigatorGroup(
-					Messages.NavigatorGroupName_Suppressor_3003_incominglinks,
-					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-			Collection<View> connectedViews;
-			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-					SubsumptionVisualIDRegistry
-							.getType(OutputActivatesEditPart.VISUAL_ID));
-			incominglinks.addChildren(createNavigatorItems(connectedViews,
-					incominglinks, true));
-			if (!incominglinks.isEmpty()) {
-				result.add(incominglinks);
+			if (!source.isEmpty()) {
+				result.add(source);
 			}
 			return result.toArray();
 		}
@@ -406,23 +423,6 @@ public class SubsumptionNavigatorContentProvider implements
 			if (!source.isEmpty()) {
 				result.add(source);
 			}
-			return result.toArray();
-		}
-
-		case ModuleEditPart.VISUAL_ID: {
-			LinkedList<SubsumptionAbstractNavigatorItem> result = new LinkedList<SubsumptionAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					SubsumptionVisualIDRegistry
-							.getType(InputEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement,
-					false));
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					SubsumptionVisualIDRegistry
-							.getType(OutputEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement,
-					false));
 			return result.toArray();
 		}
 		}

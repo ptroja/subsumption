@@ -53,9 +53,6 @@
           xsi:type="gmfgraph:CustomFigure"
           name="InputFigure"
           qualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalArrowLineRectangle">
-        <preferredSize
-            dx="40"
-            dy="10"/>
         <insets
             right="7"/>
       </actualFigure>
