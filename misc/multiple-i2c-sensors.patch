@@ -1,0 +1,22 @@
+--- nxt-buffers.adb.orig	Wed Aug  3 08:46:48 2011
++++ nxt-buffers.adb	Wed Aug  3 08:59:09 2011
+@@ -73,6 +73,8 @@
+    procedure Clear (This : in out Buffer) is
+    begin
+       This.Count := 0;
++      This.Next_In := 1;
++      This.Next_Out := 1;
+    end Clear;
+ 
+    ------------
+--- nxt-i2c_sensors.adb.orig	Wed Aug  3 09:11:50 2011
++++ nxt-i2c_sensors.adb	Wed Aug  3 09:12:28 2011
+@@ -93,7 +93,7 @@
+       end if;
+ 
+       while Busy (This.Port) loop
+-         delay until Clock + Milliseconds (0);
++         delay until Clock;
+       end loop;
+ 
+       Complete_Transaction
