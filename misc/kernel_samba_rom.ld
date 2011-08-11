@@ -26,15 +26,8 @@
 
 MEMORY
 {
-/*
-   rom : ORIGIN = 1M + 32K, LENGTH =256k - 32k
-*/
    rom : ORIGIN = 1M, LENGTH =256k
    vector_ram : ORIGIN = 2M, LENGTH = 64
-/* Samba needs space reserved up to 8k */
-/*
-   ram : ORIGIN = 2M + 8k, LENGTH = 64K - 8k
-*/
    ram : ORIGIN = 2M + 64, LENGTH = 64K - 64
 }
 
