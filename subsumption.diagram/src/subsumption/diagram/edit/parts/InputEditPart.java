@@ -146,10 +146,10 @@ public class InputEditPart extends AbstractBorderItemEditPart {
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 10);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 5);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());

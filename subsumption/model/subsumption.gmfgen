@@ -126,11 +126,10 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="OutputFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;">
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(5)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;">
         <attributes
             xsi:type="gmfgen:DefaultSizeAttributes"
-            width="20"
-            height="10"/>
+            height="5"/>
       </viewmap>
       <modelFacet>
         <metaClass
@@ -330,7 +329,7 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="OutputFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(10)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class OutputFigure extends subsumption.diagram.edit.parts.custom.VerticalLineRectangle {&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public OutputFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#xA;this.setPreferredSize(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(40)&#xA;, getMapMode().DPtoLP(5)&#xA;));&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
     </compartments>
     <palette>
       <groups

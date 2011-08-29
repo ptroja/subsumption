@@ -22,7 +22,7 @@
 [module_io(aModule)/]
 [module_task(aModule)/]
 [operation_spec(aModule)/]
-[operation_body(aModule)/]
+[comment][operation_body(aModule)/][/comment]
 [buffers_spec(aModule)/]
 [/for]
 
