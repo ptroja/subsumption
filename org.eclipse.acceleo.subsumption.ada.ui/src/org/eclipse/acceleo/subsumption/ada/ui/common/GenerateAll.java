@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.osgi.framework.Bundle;
 
 
@@ -79,47 +78,15 @@ public class GenerateAll {
 			targetFolder.mkdirs();
 		}
 		
-		// final URI template0 = getTemplateURI("org.eclipse.acceleo.subsumption.ada", new Path("/org/eclipse/acceleo/subsumption/ada/files/module_io.emtl"));
-		// org.eclipse.acceleo.subsumption.ada.files.Module_io gen0 = new org.eclipse.acceleo.subsumption.ada.files.Module_io(modelURI, targetFolder, arguments) {
+		// final URI template0 = getTemplateURI("org.eclipse.acceleo.subsumption.ada", new Path("/org/eclipse/acceleo/subsumption/ada/files/sub2ada.emtl"));
+		// org.eclipse.acceleo.subsumption.ada.files.Sub2ada gen0 = new org.eclipse.acceleo.subsumption.ada.files.Sub2ada(modelURI, targetFolder, arguments) {
 		//	protected URI createTemplateURI(String entry) {
 		//		return template0;
 		//	}
 		//};
 		//gen0.doGenerate(BasicMonitor.toMonitor(monitor));
-		org.eclipse.acceleo.subsumption.ada.files.Module_io gen0 = new org.eclipse.acceleo.subsumption.ada.files.Module_io(modelURI, targetFolder, arguments);
+		org.eclipse.acceleo.subsumption.ada.files.Sub2ada gen0 = new org.eclipse.acceleo.subsumption.ada.files.Sub2ada(modelURI, targetFolder, arguments);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
-			
-		EObject model = gen0.getModel();
-		if (model != null) {
-				
-			//final URI template1 = getTemplateURI("org.eclipse.acceleo.subsumption.ada", new Path("/org/eclipse/acceleo/subsumption/ada/files/module_task.emtl"));
-			//org.eclipse.acceleo.subsumption.ada.files.Module_task gen1 = new org.eclipse.acceleo.subsumption.ada.files.Module_task(model, targetFolder, arguments) {
-			//	protected URI createTemplateURI(String entry) {
-			//		return template1;
-			//	}
-			//};
-			//gen1.doGenerate(BasicMonitor.toMonitor(monitor));
-			org.eclipse.acceleo.subsumption.ada.files.Module_task gen1 = new org.eclipse.acceleo.subsumption.ada.files.Module_task(model, targetFolder, arguments);
-			gen1.doGenerate(BasicMonitor.toMonitor(monitor));
-			//final URI template2 = getTemplateURI("org.eclipse.acceleo.subsumption.ada", new Path("/org/eclipse/acceleo/subsumption/ada/files/project.emtl"));
-			//org.eclipse.acceleo.subsumption.ada.files.Project gen2 = new org.eclipse.acceleo.subsumption.ada.files.Project(model, targetFolder, arguments) {
-			//	protected URI createTemplateURI(String entry) {
-			//		return template2;
-			//	}
-			//};
-			//gen2.doGenerate(BasicMonitor.toMonitor(monitor));
-			org.eclipse.acceleo.subsumption.ada.files.Project gen2 = new org.eclipse.acceleo.subsumption.ada.files.Project(model, targetFolder, arguments);
-			gen2.doGenerate(BasicMonitor.toMonitor(monitor));
-			//final URI template3 = getTemplateURI("org.eclipse.acceleo.subsumption.ada", new Path("/org/eclipse/acceleo/subsumption/ada/files/sub2ada.emtl"));
-			//org.eclipse.acceleo.subsumption.ada.files.Sub2ada gen3 = new org.eclipse.acceleo.subsumption.ada.files.Sub2ada(model, targetFolder, arguments) {
-			//	protected URI createTemplateURI(String entry) {
-			//		return template3;
-			//	}
-			//};
-			//gen3.doGenerate(BasicMonitor.toMonitor(monitor));
-			org.eclipse.acceleo.subsumption.ada.files.Sub2ada gen3 = new org.eclipse.acceleo.subsumption.ada.files.Sub2ada(model, targetFolder, arguments);
-			gen3.doGenerate(BasicMonitor.toMonitor(monitor));
-		}
 			
 		
 	}
