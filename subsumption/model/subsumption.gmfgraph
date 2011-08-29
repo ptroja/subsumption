@@ -31,7 +31,7 @@
           qualifiedClassName="subsumption.diagram.edit.parts.custom.VerticalLineRectangle">
         <preferredSize
             dx="40"
-            dy="10"/>
+            dy="5"/>
       </actualFigure>
     </descriptors>
     <descriptors

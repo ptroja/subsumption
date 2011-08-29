@@ -199,7 +199,7 @@ public class OutputEditPart extends BorderedBorderItemEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(20, 10);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 5);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());
@@ -363,7 +363,7 @@ public class OutputEditPart extends BorderedBorderItemEditPart {
 		public OutputFigure() {
 
 			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(40),
-					getMapMode().DPtoLP(10)));
+					getMapMode().DPtoLP(5)));
 		}
 
 	}
