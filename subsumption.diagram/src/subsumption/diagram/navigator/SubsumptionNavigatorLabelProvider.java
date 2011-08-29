@@ -97,27 +97,27 @@ public class SubsumptionNavigatorLabelProvider extends LabelProvider implements
 		case SystemEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Diagram?http://subsumption/1.0?System", SubsumptionElementTypes.System_1000); //$NON-NLS-1$
-		case OutputSinkEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://subsumption/1.0?Output?sink", SubsumptionElementTypes.OutputSink_4001); //$NON-NLS-1$
-		case OutputEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Node?http://subsumption/1.0?Output", SubsumptionElementTypes.Output_3002); //$NON-NLS-1$
 		case InputEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Node?http://subsumption/1.0?Input", SubsumptionElementTypes.Input_3001); //$NON-NLS-1$
-		case InhibitorEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Node?http://subsumption/1.0?Inhibitor", SubsumptionElementTypes.Inhibitor_3004); //$NON-NLS-1$
 		case SuppressorEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Node?http://subsumption/1.0?Suppressor", SubsumptionElementTypes.Suppressor_3003); //$NON-NLS-1$
-		case OutputActivatesEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://subsumption/1.0?Output?activates", SubsumptionElementTypes.OutputActivates_4002); //$NON-NLS-1$
 		case ModuleEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?TopLevelNode?http://subsumption/1.0?Module", SubsumptionElementTypes.Module_2001); //$NON-NLS-1$
+		case InhibitorEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Node?http://subsumption/1.0?Inhibitor", SubsumptionElementTypes.Inhibitor_3004); //$NON-NLS-1$
+		case OutputEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Node?http://subsumption/1.0?Output", SubsumptionElementTypes.Output_3002); //$NON-NLS-1$
+		case OutputSinkEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://subsumption/1.0?Output?sink", SubsumptionElementTypes.OutputSink_4001); //$NON-NLS-1$
+		case OutputActivatesEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://subsumption/1.0?Output?activates", SubsumptionElementTypes.OutputActivates_4002); //$NON-NLS-1$
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -172,20 +172,20 @@ public class SubsumptionNavigatorLabelProvider extends LabelProvider implements
 		switch (SubsumptionVisualIDRegistry.getVisualID(view)) {
 		case SystemEditPart.VISUAL_ID:
 			return getSystem_1000Text(view);
-		case OutputSinkEditPart.VISUAL_ID:
-			return getOutputSink_4001Text(view);
-		case OutputEditPart.VISUAL_ID:
-			return getOutput_3002Text(view);
 		case InputEditPart.VISUAL_ID:
 			return getInput_3001Text(view);
-		case InhibitorEditPart.VISUAL_ID:
-			return getInhibitor_3004Text(view);
 		case SuppressorEditPart.VISUAL_ID:
 			return getSuppressor_3003Text(view);
-		case OutputActivatesEditPart.VISUAL_ID:
-			return getOutputActivates_4002Text(view);
 		case ModuleEditPart.VISUAL_ID:
 			return getModule_2001Text(view);
+		case InhibitorEditPart.VISUAL_ID:
+			return getInhibitor_3004Text(view);
+		case OutputEditPart.VISUAL_ID:
+			return getOutput_3002Text(view);
+		case OutputSinkEditPart.VISUAL_ID:
+			return getOutputSink_4001Text(view);
+		case OutputActivatesEditPart.VISUAL_ID:
+			return getOutputActivates_4002Text(view);
 		}
 		return getUnknownElementText(view);
 	}

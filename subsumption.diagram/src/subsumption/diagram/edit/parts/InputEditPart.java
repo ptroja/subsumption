@@ -282,9 +282,6 @@ public class InputEditPart extends AbstractBorderItemEditPart {
 		 */
 		public InputFigure() {
 
-			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(40),
-					getMapMode().DPtoLP(10)));
-
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(0),
 					getMapMode().DPtoLP(0), getMapMode().DPtoLP(0),
 					getMapMode().DPtoLP(7)));
